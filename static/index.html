@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Premium Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0f1a;
+            color: #c8d6e5;
+            line-height: 1.6;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: linear-gradient(135deg, #0b0f1a 0%, #1a1f35 100%);
+            border-bottom: 1px solid #1e2a45;
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+
+        .header-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: #38bdf8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span { color: #e2e8f0; }
+
+        nav a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            margin-left: 24px;
+            transition: color 0.2s;
+        }
+
+        nav a:hover { color: #38bdf8; }
+
+        /* ===== HERO ===== */
+        .hero {
+            text-align: center;
+            padding: 80px 24px 60px;
+            background: radial-gradient(ellipse at top, #0f1b3d 0%, #0b0f1a 70%);
+        }
+
+        .hero h1 {
+            font-size: 40px;
+            font-weight: 800;
+            color: #f1f5f9;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero h1 em {
+            font-style: normal;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: #64748b;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 8px;
+        }
+
+        .section-sub {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 32px;
+        }
+
+        /* ===== ABOUT CARDS ===== */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: #111827;
+            border: 1px solid #1e2a45;
+            border-radius: 12px;
+            padding: 24px;
+            transition: border-color 0.2s;
+        }
+
+        .card:hover { border-color: #334155; }
+
+        .card-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .card h3 {
+            font-size: 15px;
+            color: #e2e8f0;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .card p {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        /* ===== DATASET TABLE ===== */
+        .table-wrap {
+            background: #111827;
+            border: 1px solid #1e2a45;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead { background: #0f172a; }
+
+        th {
+            text-align: left;
+            padding: 12px 16px;
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 10px 16px;
+            border-top: 1px solid #1e2a45;
+            color: #c8d6e5;
+        }
+
+        code {
+            background: #1e293b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #38bdf8;
+        }
+
+        /* ===== PREDICTOR FORM ===== */
+        .predictor {
+            background: #111827;
+            border: 1px solid #1e2a45;
+            border-radius: 16px;
+            padding: 36px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group { display: flex; flex-direction: column; }
+
+        .form-group label {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 500;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, select {
+            padding: 10px 14px;
+            background: #0b0f1a;
+            border: 1px solid #1e2a45;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus { border-color: #38bdf8; }
+
+        .btn-predict {
+            grid-column: 1 / -1;
+            padding: 14px;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            color: #0b0f1a;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: opacity 0.2s;
+        }
+
+        .btn-predict:hover { opacity: 0.9; }
+
+        /* ===== RESULT ===== */
+        .result-box {
+            display: none;
+            margin-top: 28px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(56,189,248,0.08), rgba(129,140,248,0.08));
+            border: 1px solid #1e2a45;
+            border-radius: 12px;
+            padding: 28px;
+        }
+
+        .result-box.show { display: block; }
+
+        .result-label {
+            font-size: 13px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .result-amount {
+            font-size: 44px;
+            font-weight: 800;
+            color: #4ade80;
+        }
+
+        .result-note {
+            font-size: 12px;
+            color: #475569;
+            margin-top: 8px;
+        }
+
+        .error-msg {
+            display: none;
+            color: #f87171;
+            font-size: 13px;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .error-msg.show { display: block; }
+
+        /* ===== TECH STACK ===== */
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            background: #111827;
+            border: 1px solid #1e2a45;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 13px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            border-top: 1px solid #1e2a45;
+            padding: 32px 24px;
+            text-align: center;
+            color: #475569;
+            font-size: 13px;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: #38bdf8;
+            text-decoration: none;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 28px; }
+            .cards { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-inner">
+            <div class="logo">
+                <span>MedPredict</span>
+            </div>
+            <nav>
+                <a href="#about">About</a>
+                <a href="#dataset">Dataset</a>
+                <a href="#predict">Predict</a>
+                <a href="/docs" target="_blank">API Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <div class="hero">
+        <h1>Medical Insurance<br><em>Premium Predictor</em></h1>
+        <p>An advanced XGBoost Regressor model that predicts annual health insurance premiums based on age, BMI, smoking status, and other personal attributes.</p>
+    </div>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <h2 class="section-title">Project Overview</h2>
+        <p class="section-sub">Predicting health insurance charges using supervised machine learning</p>
+
+        <div class="cards">
+            <div class="card">
+                <div class="card-icon">🧠</div>
+                <h3>XGBoost Regressor</h3>
+                <p>The optimal algorithm for predicting continuous target values like insurance costs.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <h3>R² Score: 78.3%</h3>
+                <p>The model explains 78.3% of the variance with an MAE of ₹3,47,500 average error.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🚬</div>
+                <h3>Key Insight</h3>
+                <p>Smoking is the single largest risk factor — smokers face up to 4x higher premiums!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- DATASET -->
+    <section id="dataset">
+        <h2 class="section-title">Dataset Details</h2>
+        <p class="section-sub">Kaggle — Medical Cost Personal Dataset (1,338 rows × 7 columns)</p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Column</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>age</code></td><td>Numeric</td><td>Primary beneficiary age (18-64 years)</td></tr>
+                    <tr><td><code>sex</code></td><td>Categorical</td><td>Insurance contractor gender — male / female</td></tr>
+                    <tr><td><code>bmi</code></td><td>Numeric</td><td>Body Mass Index (kg/m²)</td></tr>
+                    <tr><td><code>children</code></td><td>Numeric</td><td>Number of children / dependents (0-5)</td></tr>
+                    <tr><td><code>smoker</code></td><td>Categorical</td><td>Smoking status — yes / no</td></tr>
+                    <tr><td><code>region</code></td><td>Categorical</td><td>US residential region (NE / NW / SE / SW)</td></tr>
+                    <tr><td><code>charges</code></td><td>Numeric</td><td>Annual insurance medical costs in INR (Target)</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- PREDICT -->
+    <section id="predict">
+        <h2 class="section-title">Try It Out</h2>
+        <p class="section-sub">Enter customer details below to estimate annual insurance charges</p>
+
+        <div class="predictor">
+            <form id="predictionForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input type="number" id="age" placeholder="e.g. 30" required min="18" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label>BMI</label>
+                        <input type="number" id="bmi" placeholder="e.g. 25.0" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Sex</label>
+                        <select id="sex">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Children</label>
+                        <input type="number" id="children" value="0" min="0" max="10" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Smoker</label>
+                        <select id="smoker">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Region</label>
+                        <select id="region">
+                            <option value="northeast">Northeast</option>
+                            <option value="northwest">Northwest</option>
+                            <option value="southeast">Southeast</option>
+                            <option value="southwest">Southwest</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-predict">Predict Premium</button>
+                </div>
+            </form>
+
+            <div class="result-box" id="resultBox">
+                <p class="result-label">Estimated Annual Premium</p>
+                <p class="result-amount" id="resultAmount"></p>
+                <p class="result-note">Prediction generated by XGBoost Regressor model (R² = 0.8837 (88.4%))</p>
+            </div>
+
+            <p class="error-msg" id="errorMsg"></p>
+        </div>
+    </section>
+
+    <!-- TECH STACK -->
+    <section>
+        <h2 class="section-title">Tech Stack</h2>
+        <p class="section-sub">Core libraries and frameworks utilized in this project</p>
+        <div class="tech-tags">
+            <span class="tag">Python</span>
+            <span class="tag">Scikit-Learn</span>
+            <span class="tag">XGBoost Regressor</span>
+            <span class="tag">FastAPI</span>
+            <span class="tag">Pandas</span>
+            <span class="tag">NumPy</span>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>Medical Insurance Premium Prediction &mdash; PROJECT1</p>
+        <p style="margin-top: 6px;">Dataset: <a href="https://www.kaggle.com/datasets/mirichoi0218/insurance" target="_blank">Kaggle - Medical Cost Personal Dataset</a></p>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const resultBox = document.getElementById('resultBox');
+            const errorMsg = document.getElementById('errorMsg');
+
+            resultBox.classList.remove('show');
+            errorMsg.classList.remove('show');
+
+            const data = {
+                age: parseInt(document.getElementById('age').value),
+                sex: document.getElementById('sex').value,
+                bmi: parseFloat(document.getElementById('bmi').value),
+                children: parseInt(document.getElementById('children').value),
+                smoker: document.getElementById('smoker').value,
+                region: document.getElementById('region').value
+            };
+
+            try {
+                const res = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (!res.ok) throw new Error('API error');
+
+                const result = await res.json();
+                document.getElementById('resultAmount').textContent =
+                    '₹' + result.predicted_premium.toLocaleString('en-IN', { minimumFractionDigits: 2 });
+                resultBox.classList.add('show');
+            } catch (err) {
+                errorMsg.textContent = 'Error: Failed to connect to the API. Is the server running?';
+                errorMsg.classList.add('show');
+            }
+        });
+    </script>
+
+</body>
+</html>
